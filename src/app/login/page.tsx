@@ -8,15 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { redirect } from "next/navigation";
 
 export default function LoginPage() {
   return (
     <div className="h-screen w-full flex items-center justify-center bg-slate-100">
-      <div className="w-2/3 md:w-1/2 lg:w-2/5">
-        <Card>
+      <div className="w-2/3 md:w-1/2 lg:w-1/3">
+        <Card className="py-8">
           <CardHeader className="text-center border-b border-slate-200">
             <CardTitle className="text-3xl">SIJUANG</CardTitle>
             <CardDescription>

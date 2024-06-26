@@ -6,8 +6,6 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const authentication = cookies().get("accessToken");
 
-  console.log("authentication : ", authentication);
-
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/login", request.url));
   }
