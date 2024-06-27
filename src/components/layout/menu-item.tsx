@@ -32,6 +32,11 @@ export default function MenuItem({
 }: MenuItemProps) {
   const pathname = usePathname();
 
+  const isActive =
+    href &&
+    (pathname === href ||
+      children?.some((child) => pathname.startsWith(child.href!)));
+
   const checkPermissions = () => {
     return checkMenuGroup(groups, currentGroup!);
   };
@@ -43,8 +48,8 @@ export default function MenuItem({
           {href && !children ? (
             <Link href={href}>
               <div
-                className={`flex flex-grow gap-4 items-center px-4 py-2 hover:no-underline hover:bg-primary-500 hover:text-slate-300 transition-all rounded ${
-                  pathname === href ? "bg-primary-500" : ""
+                className={`flex text-sm flex-grow gap-4 items-center px-4 py-2 hover:no-underline hover:bg-primary-500 hover:text-slate-300 transition-all rounded ${
+                  isActive ? "bg-primary-500" : ""
                 }`}
               >
                 <Icon icon={icon!} className="h-4 w-4" />
@@ -59,7 +64,7 @@ export default function MenuItem({
               >
                 <AccordionTrigger
                   className={`flex flex-grow gap-4 hover:no-underline hover:bg-primary-500 rounded items-center px-4 py-2 text-white justify-between hover:text-slate-300 ${
-                    pathname === href ? "bg-primary-500" : ""
+                    isActive ? "bg-primary-500" : ""
                   }`}
                 >
                   <div className="flex gap-4">
@@ -67,9 +72,9 @@ export default function MenuItem({
                     {label}
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-0">
+                <AccordionContent className="pt-2 pb-0">
                   {children && (
-                    <div className="ml-4">
+                    <div className="ml-4 flex flex-col gap-2">
                       {children.map((child, index) => {
                         return (
                           <MenuItem

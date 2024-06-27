@@ -16,7 +16,7 @@ export default function LayoutWrapper({
 }: LayoutWrapperProps) {
   return (
     <AuthProvider currentGroup={currentGroup} currentSession={currentSession}>
-      <div className="h-screen w-full flex justify-center mx-auto bg-slate-100">
+      <div className="min-h-screen w-full flex justify-center mx-auto bg-slate-100">
         <div className="w-full">
           <Sidebar />
           <div className="flex ml-64 flex-grow">
