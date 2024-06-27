@@ -1,5 +1,6 @@
 "use server";
 
+import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -13,7 +14,7 @@ export async function login(prevState: string | undefined, formData: FormData) {
     });
 
   if (parsedCredentials.success) {
-    console.log(parsedCredentials);
+    // console.log(parsedCredentials);
     const response = await fetch(`${process.env.API_URL}/login`, {
       method: "POST",
       headers: {
@@ -36,7 +37,7 @@ export async function login(prevState: string | undefined, formData: FormData) {
 const setAuthCookie = (response: Response) => {
   const setCookieHeader = response.headers.get("Set-Cookie");
 
-  console.log("cookie headaer : ", setCookieHeader);
+  // console.log("cookie headaer : ", setCookieHeader);
 
   if (setCookieHeader) {
     const setCookies = setCookieHeader.split(", ");
@@ -45,12 +46,9 @@ const setAuthCookie = (response: Response) => {
       if (ck[0].split("=")[0] === "access_token") return true;
     });
 
-    const token = tokenCookies[0].split("=")[1];
-    const exp = parseInt(setCookies[2].split("=")[1]);
-
-    //set expdate now + exp
-    const expDate = new Date();
-    expDate.setSeconds(expDate.getSeconds() + exp);
+    const token = tokenCookies[0].split("; ")[0].split("=")[1];
+    const exp = jwtDecode(token).exp;
+    const expDate = new Date(exp! * 1000);
 
     try {
       cookies().set({
@@ -59,6 +57,8 @@ const setAuthCookie = (response: Response) => {
         expires: expDate,
         httpOnly: true,
       });
-    } catch (e) {}
+    } catch (e) {
+      throw new Error("Failed to set cookie : " + e);
+    }
   }
 };

@@ -1,20 +1,17 @@
-import Header from "@/components/layout/header";
-import Sidebar from "@/components/layout/sidebar";
+import { getGroup, getSession } from "@/api/authorization";
+import LayoutWrapper from "@/components/layout-wrapper";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+  const group = await getGroup();
+
   return (
-    <div className="h-screen w-full flex justify-center mx-auto bg-slate-100">
-      <div className="w-full">
-        <Sidebar />
-        <div className="flex ml-64 flex-grow">
-          <Header />
-          <main>{children}</main>
-        </div>
-      </div>
-    </div>
+    <LayoutWrapper currentGroup={group} currentSession={session}>
+      {children}
+    </LayoutWrapper>
   );
 }

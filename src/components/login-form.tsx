@@ -1,5 +1,6 @@
 "use client";
 import { login } from "@/api/action";
+import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,9 +34,9 @@ export default function LoginForm() {
           <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
         )}
         <div className="w-full">
-          <Button className="w-full" variant={"default"} type="submit">
+          <SubmitButton>
             Login
-          </Button>
+          </SubmitButton>
         </div>
       </form>
     </div>
