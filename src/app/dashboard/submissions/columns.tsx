@@ -2,16 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { ArrowUpIcon, CaretSortIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -24,7 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import SubmitButton from "@/components/submit-button";
 import {
   Tooltip,
   TooltipContent,
@@ -37,13 +27,19 @@ import { login } from "@/api/action";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type User = {
+export type Submission = {
   id: string;
   name: string;
-  nip: string;
+  total_qty: number;
+  total_price: number;
+  total_item: number;
+  status: string;
+  year: number;
+  semester: number;
+  invoice: string;
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Submission>[] = [
   {
     id: "rowNumber",
     header: "No",
@@ -54,8 +50,34 @@ export const columns: ColumnDef<User>[] = [
     header: "Nama",
   },
   {
-    accessorKey: "nip",
-    header: "NIP",
+    accessorKey: "total_qty",
+    header: "Jumlah Barang",
+  },
+  {
+    accessorKey: "total_price",
+    header: "Total Harga",
+    cell: ({ row }) =>
+      new Intl.NumberFormat("id-ID").format(row.original.total_price),
+  },
+  {
+    accessorKey: "total_item",
+    header: "Total Item",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "year",
+    header: "Tahun",
+  },
+  {
+    accessorKey: "semester",
+    header: "Semester",
+  },
+  {
+    accessorKey: "invoice",
+    header: "Invoice",
   },
   {
     id: "actions",

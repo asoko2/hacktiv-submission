@@ -20,15 +20,15 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import DataTable from "@/components/data-table/data-table";
 
-interface UsersTableProps<TData, TValue> {
+interface UsersPermissionTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function UsersTable<TData, TValue>({
+export function UsersPermissionTable<TData, TValue>({
   columns,
   data,
-}: UsersTableProps<TData, TValue>) {
+}: UsersPermissionTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -49,14 +49,7 @@ export function UsersTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between py-2">
-        <Link href={"/dashboard/users/tambah"}>
-          <Button variant={"default"} className="flex items-center gap-2">
-            <Icon icon="fluent:add-12-filled" className="h-4 w-4" />
-            {" "}
-            Tambah User
-          </Button>
-        </Link>
+      <div className="flex items-center justify-end py-2">
         <Input
           placeholder="Filter names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

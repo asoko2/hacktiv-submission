@@ -21,7 +21,7 @@ export default function LayoutWrapper({
           <Sidebar />
           <div className="flex ml-64 flex-grow">
             <Header />
-            <main className="mt-16 p-8 flex-1">{children}</main>
+            <main className="mt-16 px-8 py-4 flex-1">{children}</main>
           </div>
         </div>
       </div>

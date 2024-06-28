@@ -2,14 +2,14 @@
 
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/submit-button";
-import { State, addUser } from "@/api/users-api";
+import { State, editUser } from "@/api/users-api";
 import { Label } from "@/components/ui/label";
 import { useFormState } from "react-dom";
 
-export default function AddUserForm() {
+export default function EditUserForm() {
   const initialState: State = { message: null, errors: {} };
 
-  const [state, formActions] = useFormState(addUser, initialState);
+  const [state, formActions] = useFormState(editUser, initialState);
 
   console.log("state = ", state);
 
@@ -55,7 +55,7 @@ export default function AddUserForm() {
           </div>
         </div>
         <div className="w-full">
-          <SubmitButton>Tambah</SubmitButton>
+          <SubmitButton>Simpan</SubmitButton>
         </div>
       </form>
     </div>

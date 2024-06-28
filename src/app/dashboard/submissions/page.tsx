@@ -1,6 +1,6 @@
-import { columns } from "@/app/dashboard/users/columns";
-import { users } from "@/app/dashboard/users/data";
-import { UsersTable } from "@/app/dashboard/users/users-table";
+import { columns } from "@/app/dashboard/submissions/columns";
+import { submissions } from "@/app/dashboard/submissions/data";
+import { SubmissionsTable } from "@/app/dashboard/submissions/submissions-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-export default function UsersPage() {
+export default function SubmissionsPage() {
   return (
     <div className="flex-1">
       <div className="mb-8">
@@ -24,13 +24,13 @@ export default function UsersPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Users</BreadcrumbPage>
+              <BreadcrumbPage>Submissions</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <div className="flex flex-1">
-        <UsersTable columns={columns} data={users} />
+        <SubmissionsTable columns={columns} data={submissions} />
       </div>
     </div>
   );

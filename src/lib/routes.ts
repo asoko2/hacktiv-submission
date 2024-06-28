@@ -20,7 +20,7 @@ export const dashboardRoutes = [
         permissions: ["users.manage"],
       },
       {
-        label: "Manage Permissions",
+        label: "Manage Hak Akses",
         href: "/dashboard/users/permissions",
         groups: ["hrd"],
         permissions: ["users.manage"],
@@ -28,7 +28,7 @@ export const dashboardRoutes = [
     ],
   },
   {
-    label: "Submissions",
+    label: "Pengajuan Barang",
     href: "/dashboard/submissions",
     permissions: [
       "submission.input",
@@ -40,25 +40,5 @@ export const dashboardRoutes = [
     ],
     groups: ["atasan", "hrd", "pengesah", "pegawai"],
     icon: "ic:round-shopping-bag",
-    children: [
-      {
-        label: "Create Submission",
-        href: "/dashboard/submissions/create",
-        permissions: ["submission.input"],
-        groups: ["atasan", "hrd", "pengesah", "pegawai"],
-      },
-      {
-        label: "Submission Monitor",
-        href: "/dashboard/submissions",
-        groups: ["atasan", "hrd", "pengesah", "pegawai"],
-        permissions: [
-          "submission.first-approval",
-          "submission.second-approval",
-          "submission.authenticator-approval",
-          "submission.need-revision",
-          "submission.reject",
-        ],
-      },
-    ],
   },
 ];

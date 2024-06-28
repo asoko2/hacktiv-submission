@@ -1,6 +1,6 @@
-import { columns } from "@/app/dashboard/users/columns";
-import { users } from "@/app/dashboard/users/data";
-import { UsersTable } from "@/app/dashboard/users/users-table";
+import { columns } from "@/app/dashboard/users/permissions/columns";
+import { usersPermission } from "@/app/dashboard/users/permissions/data";
+import { UsersPermissionTable } from "@/app/dashboard/users/permissions/users-permissions-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-export default function UsersPage() {
+export default function UsersPermissionPage() {
   return (
     <div className="flex-1">
       <div className="mb-8">
@@ -24,13 +24,13 @@ export default function UsersPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Users</BreadcrumbPage>
+              <BreadcrumbPage>Users Permission</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <div className="flex flex-1">
-        <UsersTable columns={columns} data={users} />
+        <UsersPermissionTable columns={columns} data={usersPermission} />
       </div>
     </div>
   );
