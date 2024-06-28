@@ -85,7 +85,7 @@ export const columns: ColumnDef<Submission>[] = [
       const { pending } = useFormStatus();
       const [error, formAction] = useFormState(login, undefined);
 
-      const user = row.original;
+      const submission = row.original;
       const [isDialogOpen, setIsDialogOpen] = useState(false);
 
       return (
@@ -93,7 +93,19 @@ export const columns: ColumnDef<Submission>[] = [
           <TooltipProvider>
             <Tooltip delayDuration={150}>
               <TooltipTrigger asChild>
-                <Link href={`/dashboard/users/${user.id}/edit`}>
+                <Link href={`/dashboard/submissions/${submission.id}`}>
+                  <Button variant="default" size="icon">
+                    <Icon icon="tabler:eye" className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Detail</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip delayDuration={150}>
+              <TooltipTrigger asChild>
+                <Link href={`/dashboard/submissions/${submission.id}/edit`}>
                   <Button variant="default" size="icon">
                     <Icon icon="tabler:edit" className="h-4 w-4" />
                   </Button>
@@ -103,17 +115,23 @@ export const columns: ColumnDef<Submission>[] = [
             </Tooltip>
           </TooltipProvider>
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            {/* <AlertDialog> */}
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon">
-                <Icon icon="tabler:trash" className="h-4 w-4" />
-              </Button>
-            </AlertDialogTrigger>
+            <TooltipProvider>
+              <Tooltip delayDuration={150}>
+                <AlertDialogTrigger asChild>
+                  <TooltipTrigger asChild content="tooltip content">
+                    <Button variant="destructive" size="icon">
+                      <Icon icon="tabler:trash" className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                </AlertDialogTrigger>
+                <TooltipContent>Hapus</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Apakah anda yakin?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Data user {user.name} akan dihapus permanen.
+                  Data submission {submission.name} akan dihapus permanen.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

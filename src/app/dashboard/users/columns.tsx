@@ -80,13 +80,47 @@ export const columns: ColumnDef<User>[] = [
               <TooltipContent>Edit</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            {/* <AlertDialog> */}
+          {/* <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="icon">
                 <Icon icon="tabler:trash" className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Apakah anda yakin?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Data user {user.name} akan dihapus permanen.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <form>
+                  <Button
+                    type="submit"
+                    disabled={pending}
+                    variant="destructive"
+                  >
+                    Hapus
+                  </Button>
+                </form>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog> */}
+          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <TooltipProvider>
+              <Tooltip delayDuration={150}>
+                <AlertDialogTrigger asChild>
+                  <TooltipTrigger asChild content="tooltip content">
+                    <Button variant="destructive" size="icon">
+                      <Icon icon="tabler:trash" className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                </AlertDialogTrigger>
+                <TooltipContent>Hapus</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Apakah anda yakin?</AlertDialogTitle>

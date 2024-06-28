@@ -105,7 +105,13 @@ const SwitchGroupComponent = () => {
       <SelectContent>
         {Object.keys(currentSession.groups).map((group: any, index: number) => (
           <SelectItem value={group} key={index}>
-            {group}
+            {group === "hrd"
+              ? "HRD"
+              : group === "pegawai"
+              ? "Pegawai"
+              : group === "pengesah"
+              ? "Pengesah"
+              : "Atasan"}
           </SelectItem>
         ))}
       </SelectContent>
