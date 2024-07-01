@@ -24,20 +24,10 @@ import {
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { login } from "@/api/auth-api";
+import { Submission } from "@/lib/definition";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Submission = {
-  id: string;
-  name: string;
-  total_qty: number;
-  total_price: number;
-  total_item: number;
-  status: string;
-  year: number;
-  semester: number;
-  invoice: string;
-};
 
 export const columns: ColumnDef<Submission>[] = [
   {

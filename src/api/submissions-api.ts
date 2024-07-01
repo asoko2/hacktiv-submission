@@ -1,6 +1,6 @@
 "use server";
 
-import { SubmissionItem } from "@/lib/definition";
+import { Submission, SubmissionItem } from "@/lib/definition";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -87,7 +87,7 @@ export async function storeSubmission(
   redirect("/dashboard/submissions");
 }
 
-export async function getSubmissionByUserId() {
+export async function getSubmissionByUserId(): Promise<Submission[]> {
   const token = cookies().get("accessToken");
 
   const response = await fetch(`${process.env.API_URL}/auth/submissions`, {

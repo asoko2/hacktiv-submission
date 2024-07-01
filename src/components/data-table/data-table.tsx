@@ -22,6 +22,7 @@ export default function DataTable<TData, TValue>({
   table,
   columns,
 }: DataTableProps<TData, TValue>) {
+  // console.log('table', table)
   return (
     <div className="rounded-md border bg-white mb-2">
       <Table>
@@ -44,6 +45,7 @@ export default function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
+
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow

@@ -12,18 +12,15 @@ import {
 import Link from "next/link";
 
 export default async function SubmissionsPage() {
-
   const userSubmission = await getSubmissionByUserId();
-  
+
   return (
     <div className="flex-1">
       <div className="mb-8">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <Link href="/dashboard">
-                Dashboard
-              </Link>
+              <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
