@@ -36,5 +36,6 @@ export async function saveGroup(group: string) {
   cookies().set({
     name: "group",
     value: group,
+    httpOnly: true,
   });
 }

@@ -1,5 +1,5 @@
 "use client";
-import { login } from "@/api/action";
+import { login } from "@/api/auth-api";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

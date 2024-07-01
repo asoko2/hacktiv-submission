@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { login } from "@/api/action";
+import { login } from "@/api/auth-api";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -64,20 +64,12 @@ export const columns: ColumnDef<Submission>[] = [
     header: "Total Item",
   },
   {
-    accessorKey: "status",
+    accessorKey: "status_name",
     header: "Status",
   },
   {
     accessorKey: "year",
     header: "Tahun",
-  },
-  {
-    accessorKey: "semester",
-    header: "Semester",
-  },
-  {
-    accessorKey: "invoice",
-    header: "Invoice",
   },
   {
     id: "actions",

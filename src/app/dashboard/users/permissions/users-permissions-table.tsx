@@ -49,7 +49,8 @@ export function UsersPermissionTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-end py-2">
+      <div className="flex items-center justify-between py-2">
+        <h1 className="text-2xl font-semibold">Hak Akses</h1>
         <Input
           placeholder="Filter names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

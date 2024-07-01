@@ -31,17 +31,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { login } from "@/api/action";
+import { User } from "@/lib/definition";
+import { DeleteUserState, deleteUser } from "@/api/users-api";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type User = {
-  id: string;
-  name: string;
-  nip: string;
-};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -58,14 +54,27 @@ export const columns: ColumnDef<User>[] = [
     header: "NIP",
   },
   {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "username",
+    header: "Username",
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
-      const { pending } = useFormStatus();
-      const [error, formAction] = useFormState(login, undefined);
+      const initialState: DeleteUserState = {
+        errors: {
+          message: "",
+        },
+        message: "",
+      };
+      const deleteUserWithId = deleteUser.bind(null, row.original.id);
+      const [error, formAction] = useFormState(deleteUserWithId, initialState);
 
       const user = row.original;
       const [isDialogOpen, setIsDialogOpen] = useState(false);
-
       return (
         <div className="flex items-center justify-center gap-2">
           <TooltipProvider>
@@ -80,34 +89,6 @@ export const columns: ColumnDef<User>[] = [
               <TooltipContent>Edit</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          {/* <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon">
-                <Icon icon="tabler:trash" className="h-4 w-4" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Apakah anda yakin?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Data user {user.name} akan dihapus permanen.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Batal</AlertDialogCancel>
-                <form>
-                  <Button
-                    type="submit"
-                    disabled={pending}
-                    variant="destructive"
-                  >
-                    Hapus
-                  </Button>
-                </form>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog> */}
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <TooltipProvider>
               <Tooltip delayDuration={150}>
@@ -130,14 +111,8 @@ export const columns: ColumnDef<User>[] = [
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Batal</AlertDialogCancel>
-                <form>
-                  <Button
-                    type="submit"
-                    disabled={pending}
-                    variant="destructive"
-                  >
-                    Hapus
-                  </Button>
+                <form action={formAction}>
+                  <SubmitButton variant="destructive">Hapus</SubmitButton>
                 </form>
               </AlertDialogFooter>
             </AlertDialogContent>

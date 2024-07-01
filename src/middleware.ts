@@ -5,6 +5,9 @@ import type { NextRequest } from "next/server";
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const authentication = cookies().get("accessToken");
+  const currentGroup = cookies().get("group")?.value;
+
+  // console.log('currentGroup', currentGroup);
 
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -20,6 +23,13 @@ export function middleware(request: NextRequest) {
     if (!authentication) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+  }
+
+  if (
+    request.nextUrl.pathname.startsWith("/dashboard/users") &&
+    currentGroup !== "hrd"
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 }
 

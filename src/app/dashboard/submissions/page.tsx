@@ -1,5 +1,5 @@
+import { getSubmissionByUserId } from "@/api/submissions-api";
 import { columns } from "@/app/dashboard/submissions/columns";
-import { submissions } from "@/app/dashboard/submissions/data";
 import { SubmissionsTable } from "@/app/dashboard/submissions/submissions-table";
 import {
   Breadcrumb,
@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-export default function SubmissionsPage() {
+export default async function SubmissionsPage() {
+
+  const userSubmission = await getSubmissionByUserId();
+  
   return (
     <div className="flex-1">
       <div className="mb-8">
@@ -30,7 +33,7 @@ export default function SubmissionsPage() {
         </Breadcrumb>
       </div>
       <div className="flex flex-1">
-        <SubmissionsTable columns={columns} data={submissions} />
+        <SubmissionsTable columns={columns} data={userSubmission} />
       </div>
     </div>
   );

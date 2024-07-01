@@ -50,7 +50,7 @@ export function SubmissionsTable<TData, TValue>({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-2">
-        <Link href={"/dashboard/submissions/new"}>
+        <Link href={"/dashboard/submissions/pengajuan-baru"}>
           <Button variant={"default"} className="flex items-center gap-2">
             <Icon icon="fluent:add-12-filled" className="h-4 w-4" />
             {" "}

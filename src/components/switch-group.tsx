@@ -6,12 +6,8 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogOverlay,
   AlertDialogPortal,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
@@ -51,49 +47,6 @@ const SwitchGroupComponent = () => {
     }
   };
 
-  // return (
-  //   <Select
-  //     value={currentGroup}
-  //     onValueChange={(value) => onChangeGroup(value)}
-  //   >
-  //     <SelectTrigger className="w-[180px]">
-  //       <SelectValue placeholder="Select a Group" />
-  //     </SelectTrigger>
-  //     <SelectContent
-  //       hidden={hasOpenDialog}
-  //       onCloseAutoFocus={(event) => {
-  //         if (focusRef.current) {
-  //           focusRef.current.focus();
-  //           focusRef.current = null;
-  //           event.preventDefault();
-  //         }
-  //       }}
-  //     >
-  //       {Object.keys(currentSession.groups).map((group: any, index: number) => (
-  //         <DialogItem
-  //           key={index}
-  //           onSelect={handleDialogItemSelect}
-  //           onOpenChange={handleDialogItemOpenChange}
-  //           triggerChildren={group}
-  //         >
-  //           <AlertDialogContent>
-  //             <AlertDialogHeader>
-  //               <AlertDialogTitle>
-  //                 Are you sure you want to switch to {group}?
-  //               </AlertDialogTitle>
-  //             </AlertDialogHeader>
-  //             <AlertDialogFooter>
-  //               <AlertDialogCancel>Cancel</AlertDialogCancel>
-  //               <AlertDialogAction onClick={handleDialogItemSelect}>
-  //                 Switch
-  //               </AlertDialogAction>
-  //             </AlertDialogFooter>
-  //           </AlertDialogContent>
-  //         </DialogItem>
-  //       ))}
-  //     </SelectContent>
-  //   </Select>
-  // );
   return (
     <Select
       value={currentGroup}

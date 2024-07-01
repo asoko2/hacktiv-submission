@@ -1,6 +1,7 @@
+import { getUsersWithGroup } from "@/api/users-api";
 import { columns } from "@/app/dashboard/users/permissions/columns";
-import { usersPermission } from "@/app/dashboard/users/permissions/data";
 import { UsersPermissionTable } from "@/app/dashboard/users/permissions/users-permissions-table";
+import CheckPermission from "@/components/check-permission";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,27 +12,29 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-export default function UsersPermissionPage() {
+export default async function UsersPermissionPage() {
+  const userWithGroups = await getUsersWithGroup();
+
   return (
-    <div className="flex-1">
-      <div className="mb-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <Link href="/dashboard">
-                Dashboard
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Users Permission</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+    <CheckPermission groups={["hrd"]}>
+      <div className="flex-1">
+        <div className="mb-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <Link href="/dashboard">Dashboard</Link>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Users Permission</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <div className="flex flex-1">
+          <UsersPermissionTable columns={columns} data={userWithGroups} />
+        </div>
       </div>
-      <div className="flex flex-1">
-        <UsersPermissionTable columns={columns} data={usersPermission} />
-      </div>
-    </div>
+    </CheckPermission>
   );
 }
