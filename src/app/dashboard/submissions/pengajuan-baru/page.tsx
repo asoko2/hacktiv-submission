@@ -1,6 +1,5 @@
 "use client";
-import { login } from "@/api/auth-api";
-import { storeSubmission, storeSubmissionState } from "@/api/submissions-api";
+import { storeSubmission } from "@/api/submissions-api";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,11 +22,8 @@ export default function NewSubmissionsPage() {
   const [submissionsItems, setSubmissionsItems] = useState<SubmissionItem[]>([
     { itemName: "", price: 0, qty: 0, total: 0 },
   ]);
-  const initialState: storeSubmissionState = {
-    errors: {
-      year: [],
-      name: [],
-    },
+  const initialState = {
+    errors: {},
     message: null,
   };
   const storeSubmissionWithItems = storeSubmission.bind(null, submissionsItems);
@@ -35,11 +31,6 @@ export default function NewSubmissionsPage() {
     storeSubmissionWithItems,
     initialState
   );
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(e.currentTarget.onformdata?.length);
-  };
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, index) => currentYear - index);
@@ -77,12 +68,33 @@ export default function NewSubmissionsPage() {
             <div className="grid grid-cols-1 gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="name">Deskripsi</Label>
-                <Input id="name" name="name" />
+                <Input id="name" name="name" aria-describedby="name-error" />
+                <div id="name-error" aria-live="polite" aria-atomic="true">
+                  {Object.keys(state.errors).length > 0
+                    ? state.errors.map(
+                        (error: {
+                          code: string;
+                          message: string;
+                          path: {
+                            0: string;
+                          };
+                        }) =>
+                          error.path[0] === "name" ? (
+                            <p
+                              key={error.code}
+                              className="text-red-500 text-sm"
+                            >
+                              {error.message}
+                            </p>
+                          ) : null
+                      )
+                    : null}
+                </div>
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="year">Tahun</Label>
                 <Select name="year">
-                  <SelectTrigger>
+                  <SelectTrigger aria-describedby="year-error">
                     <SelectValue placeholder="Pilih Tahun" />
                   </SelectTrigger>
                   <SelectContent>
@@ -93,15 +105,36 @@ export default function NewSubmissionsPage() {
                     ))}
                   </SelectContent>
                 </Select>
+                <div id="year-error" aria-live="polite" aria-atomic="true">
+                  {Object.keys(state.errors).length > 0
+                    ? state.errors.map(
+                        (error: {
+                          code: string;
+                          message: string;
+                          path: {
+                            0: string;
+                          };
+                        }) =>
+                          error.path[0] === "year" ? (
+                            <p
+                              key={error.code}
+                              className="text-red-500 text-sm"
+                            >
+                              {error.message}
+                            </p>
+                          ) : null
+                      )
+                    : null}
+                </div>
               </div>
               <div className="w-1/4">
-                <Button variant="default" onClick={handleClick}>
+                <Button variant="default" onClick={handleClick} type="button">
                   Tambah Barang
                 </Button>
               </div>
               {submissionsItems.map((item, index) => (
-                <div key={index} className="flex justify-between items-end">
-                  <div className="grid grid-cols-4 items-end gap-4">
+                <div key={index} className="flex justify-between items-center">
+                  <div className="grid grid-cols-4 items-start gap-4">
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="name">Nama Barang</Label>
                       <Input
@@ -110,39 +143,127 @@ export default function NewSubmissionsPage() {
                         value={item.itemName}
                         onChange={(e) => handleChange(e, index)}
                       />
+                      <div
+                        id="itemName-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >
+                        {Object.keys(state.errors).length > 0
+                          ? state.errors.map(
+                              (error: {
+                                code: string;
+                                message: string;
+                                path: {
+                                  0: string;
+                                  1: number;
+                                  2: string;
+                                };
+                              }) =>
+                                error.path[1] === index &&
+                                error.path[2] === "itemName" ? (
+                                  <p
+                                    key={error.code}
+                                    className="text-red-500 text-sm"
+                                  >
+                                    {error.message}
+                                  </p>
+                                ) : null
+                            )
+                          : null}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="price">Harga</Label>
                       <Input
+                        type="number"
                         id="price"
                         name="price"
                         value={item.price}
                         onChange={(e) => handleChange(e, index)}
                       />
+                      <div
+                        id="itemName-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >
+                        {Object.keys(state.errors).length > 0
+                          ? state.errors.map(
+                              (error: {
+                                code: string;
+                                message: string;
+                                path: {
+                                  0: string;
+                                  1: number;
+                                  2: string;
+                                };
+                              }) =>
+                                error.path[1] === index &&
+                                error.path[2] === "price" ? (
+                                  <p
+                                    key={error.code}
+                                    className="text-red-500 text-sm"
+                                  >
+                                    {error.message}
+                                  </p>
+                                ) : null
+                            )
+                          : null}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="qty">Jumlah Barang</Label>
                       <Input
                         id="qty"
+                        type="number"
                         name="qty"
                         value={item.qty}
                         onChange={(e) => handleChange(e, index)}
                       />
+                      <div
+                        id="itemName-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >
+                        {Object.keys(state.errors).length > 0
+                          ? state.errors.map(
+                              (error: {
+                                code: string;
+                                message: string;
+                                path: {
+                                  0: string;
+                                  1: number;
+                                  2: string;
+                                };
+                              }) =>
+                                error.path[1] === index &&
+                                error.path[2] === "qty" ? (
+                                  <p
+                                    key={error.code}
+                                    className="text-red-500 text-sm"
+                                  >
+                                    {error.message}
+                                  </p>
+                                ) : null
+                            )
+                          : null}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2">
                       <Label htmlFor="total">Total Harga</Label>
                       <Input
                         id="total"
+                        type="number"
                         name="total"
                         value={item.total}
                         readOnly
                       />
                     </div>
                   </div>
-                  <div>
+                  <div className="items-start flex">
                     <Button
                       variant="destructive"
                       onClick={() => handleDelete(index)}
+                      type="button"
                     >
                       <Icon icon="tabler:trash" className="h-4 w-4" />
                     </Button>

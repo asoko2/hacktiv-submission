@@ -143,8 +143,6 @@ export async function editUser(
 
   const responseJson = await response.json();
 
-  console.log(responseJson);
-
   if (!response.ok) {
     return {
       errors: responseJson.errors,
@@ -248,8 +246,6 @@ export async function syncGroups(
   );
 
   const responseJson = await response.json();
-
-  console.log(responseJson);
 
   if (!response.ok) {
     return {

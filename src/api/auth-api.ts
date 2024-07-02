@@ -46,7 +46,7 @@ const setAuthCookie = (response: Response) => {
       if (ck[0].split("=")[0] === "access_token") return true;
     });
 
-    console.log('tokenCookies = ', tokenCookies)
+    console.log("tokenCookies = ", tokenCookies);
     const token = tokenCookies[0].split("; ")[0].split("=")[1];
     const exp = jwtDecode(token).exp;
     const expDate = new Date(exp! * 1000);
@@ -57,6 +57,11 @@ const setAuthCookie = (response: Response) => {
         value: token,
         expires: expDate,
         httpOnly: true,
+      });
+
+      cookies().set({
+        name: "group",
+        value: "pegawai",
       });
     } catch (e) {
       throw new Error("Failed to set cookie : " + e);

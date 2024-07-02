@@ -1,4 +1,3 @@
-"use client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,10 +5,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -19,17 +17,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { useState } from "react";
-import { useFormStatus } from "react-dom";
 
-export default function SubmissionDetailPage() {
-  const { pending } = useFormStatus();
-  // const [error, formAction] = useFormState(login, undefined);
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+export default function SubmissionDetailSkeleton() {
   return (
-    <div className="flex-1">
+    <div>
       <div className="mb-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -42,18 +33,20 @@ export default function SubmissionDetailPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Pengajuan Laptop</BreadcrumbPage>
+              <BreadcrumbPage>
+                <Skeleton className="w-36 h-4 rounded" />
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Card>
+      <Card className="bg-transparent border-0 shadow-none">
         <CardContent className="p-4">
-          <div className="flex justify-between">
-            <h1 className="text-xl font-semibold">Detail Pengajuan</h1>
-          </div>
+          <h1 className="text-xl font-semibold flex items-center gap-2">
+            Detail Pengajuan - <Skeleton className="w-36 h-4 rounded" />
+          </h1>
           <Separator className="my-2" />
-          <Table>
+          <Table className="bg-white rounded-md">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-1/12">NO</TableHead>
@@ -63,10 +56,15 @@ export default function SubmissionDetailPage() {
                   Jumlah Barang
                 </TableHead>
                 <TableHead className="w-2/12 text-right">Total Harga</TableHead>
-                <TableHead className="text-center">Aksi</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Skeleton className="w-full h-4 rounded" />
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </CardContent>

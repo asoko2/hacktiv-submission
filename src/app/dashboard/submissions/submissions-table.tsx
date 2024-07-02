@@ -32,8 +32,6 @@ export function SubmissionsTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  console.log('data = ', data)
-
   const table = useReactTable({
     data,
     columns,

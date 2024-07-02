@@ -9,6 +9,7 @@ export type storeSubmissionState = {
   errors?: {
     year?: string[];
     name?: string[];
+    items?: {}[];
   };
   message?: string | null;
 };
@@ -27,10 +28,16 @@ const formSchema = z.object({
   }),
   items: z.array(
     z.object({
-      itemName: z.string(),
-      price: z.string(),
-      qty: z.string(),
-      total: z.number(),
+      itemName: z.string().min(1, {
+        message: "Nama barang harus diisi",
+      }),
+      price: z.coerce.number().min(1, {
+        message: "Harga barang harus diisi",
+      }),
+      qty: z.coerce.number().min(1, {
+        message: "Jumlah barang harus diisi",
+      }),
+      total: z.coerce.number(),
     })
   ),
 });
@@ -48,7 +55,7 @@ export async function storeSubmission(
     items: submissionItem,
   });
 
-  console.log("validatedFields", validatedFields.error);
+  // console.log("validatedFields", validatedFields.error);
 
   if (!validatedFields.success) {
     return {
@@ -75,7 +82,7 @@ export async function storeSubmission(
 
   const responseJson = await response.json();
 
-  console.log("responseJson", responseJson);
+  // console.log("responseJson", responseJson);
 
   if (!response.ok) {
     return {
@@ -95,6 +102,25 @@ export async function getSubmissionByUserId(): Promise<Submission[]> {
       Authorization: `Bearer ${token?.value}`,
     },
   });
+
+  const responseJson = await response.json();
+
+  return await responseJson.data;
+}
+
+export async function getSubmissionItems(
+  id: string
+): Promise<{ submission: Submission; items: SubmissionItem[] }> {
+  const token = cookies().get("accessToken");
+
+  const response = await fetch(
+    `${process.env.API_URL}/submissions/${id}/items`,
+    {
+      headers: {
+        Authorization: `Bearer ${token?.value}`,
+      },
+    }
+  );
 
   const responseJson = await response.json();
 
