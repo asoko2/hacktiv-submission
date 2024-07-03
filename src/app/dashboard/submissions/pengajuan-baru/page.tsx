@@ -142,6 +142,7 @@ export default function NewSubmissionsPage() {
                         name="itemName"
                         value={item.itemName}
                         onChange={(e) => handleChange(e, index)}
+                        aria-describedby="itemName-error"
                       />
                       <div
                         id="itemName-error"
@@ -180,9 +181,10 @@ export default function NewSubmissionsPage() {
                         name="price"
                         value={item.price}
                         onChange={(e) => handleChange(e, index)}
+                        aria-describedby="price-error"
                       />
                       <div
-                        id="itemName-error"
+                        id="price-error"
                         aria-live="polite"
                         aria-atomic="true"
                       >
@@ -218,9 +220,10 @@ export default function NewSubmissionsPage() {
                         name="qty"
                         value={item.qty}
                         onChange={(e) => handleChange(e, index)}
+                        aria-describedby="qty-error"
                       />
                       <div
-                        id="itemName-error"
+                        id="qty-error"
                         aria-live="polite"
                         aria-atomic="true"
                       >

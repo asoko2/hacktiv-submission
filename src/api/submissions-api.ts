@@ -1,6 +1,7 @@
 "use server";
 
 import { Submission, SubmissionItem } from "@/lib/definition";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -94,6 +95,77 @@ export async function storeSubmission(
   redirect("/dashboard/submissions");
 }
 
+export type updateSubmissionState = {
+  errors?: {
+    name?: string[];
+    year?: string[];
+  };
+  message?: string | null;
+};
+
+const updateSubmissionSchema = z.object({
+  name: z.coerce
+    .string({
+      required_error: "Nama harus diisi",
+    })
+    .min(1, {
+      message: "Nama harus diisi",
+    }),
+  year: z.coerce.string().min(1, {
+    message: "Tahun harus dipilih",
+  }),
+});
+
+export async function updateSubmission(
+  prevState: updateSubmissionState,
+  formData: FormData
+) {
+  const validatedFields = updateSubmissionSchema.safeParse({
+    name: formData.get("name"),
+    year: formData.get("year"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Data tidak valid",
+    };
+  }
+
+  const { name, year } = validatedFields.data;
+
+  const token = cookies().get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.API_URL}/submissions/${formData.get("id")}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, year }),
+    }
+  );
+
+  const responseJson = await response.json();
+
+  console.log("responseJson", responseJson);
+
+  if (!response.ok) {
+    return {
+      errors: responseJson.errors,
+      message: responseJson.message,
+    };
+  }
+
+  revalidatePath("/dashboard/submissions");
+  return {
+    errors: {},
+    message: "Data berhasil diupdate",
+  };
+}
+
 export async function getSubmissionByUserId(): Promise<Submission[]> {
   const token = cookies().get("accessToken");
 
@@ -108,21 +180,43 @@ export async function getSubmissionByUserId(): Promise<Submission[]> {
   return await responseJson.data;
 }
 
-export async function getSubmissionItems(
-  id: string
-): Promise<{ submission: Submission; items: SubmissionItem[] }> {
-  const token = cookies().get("accessToken");
+export type DeleteSubmissionState = {
+  errors?: {
+    message?: string;
+  };
+  message?: string;
+};
+
+export async function deleteSubmission(
+  prevState: DeleteSubmissionState,
+  formdata: FormData
+) {
+  const token = cookies().get("accessToken")?.value;
 
   const response = await fetch(
-    `${process.env.API_URL}/submissions/${id}/items`,
+    `${process.env.API_URL}/submissions/${formdata.get("id")}`,
     {
+      method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token?.value}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
 
-  const responseJson = await response.json();
+  if (!response.ok) {
+    return {
+      errors: {
+        message: "Gagal menghapus submission",
+      },
+      message: "",
+    };
+  }
 
-  return await responseJson.data;
+  revalidatePath("/dashboard/submissions");
+  return {
+    errors: {
+      message: "",
+    },
+    message: "Berhasil menghapus submission",
+  };
 }

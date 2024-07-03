@@ -21,10 +21,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { login } from "@/api/auth-api";
 import { SubmissionItem } from "@/lib/definition";
+import SubmitButton from "@/components/submit-button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -32,9 +35,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import SubmitButton from "@/components/submit-button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { updateSubmissionItem } from "@/api/submission-items-api";
+import { toast } from "@/components/ui/use-toast";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -51,7 +53,7 @@ export const columns: ColumnDef<SubmissionItem>[] = [
   },
   {
     accessorKey: "price",
-    header: "Harga",
+    header: () => <div className="w-full text-right">Harga</div>,
 
     cell: ({ row }) => (
       <div className="text-right">
@@ -61,57 +63,124 @@ export const columns: ColumnDef<SubmissionItem>[] = [
   },
   {
     accessorKey: "qty",
-    header: "Jumlah Barang",
-    cell: ({ row }) => new Intl.NumberFormat("id-ID").format(row.original.qty),
+    header: () => <div className="w-full text-right">Jumlah Barang</div>,
+    cell: ({ row }) => (
+      <div className="text-right">
+        {new Intl.NumberFormat("id-ID").format(row.original.qty)}
+      </div>
+    ),
   },
   {
     accessorKey: "total",
-    header: "Total Harga",
-    cell: ({ row }) =>
-      new Intl.NumberFormat("id-ID").format(row.original.total),
+    header: () => <div className="w-full text-right">Total Harga</div>,
+    cell: ({ row }) => (
+      <div className="text-right">
+        {new Intl.NumberFormat("id-ID").format(row.original.total)}
+      </div>
+    ),
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const { pending } = useFormStatus();
-      const [error, formAction] = useFormState(login, undefined);
 
-      const submissionItem = row.original;
+      const initialState = { errors: {}, message: null };
+      const [state, formAction] = useFormState(
+        updateSubmissionItem,
+        initialState
+      );
+
       const [isDialogOpen, setIsDialogOpen] = useState(false);
       const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
+      const data = row.original;
+
+      useEffect(() => {
+        if (state != null && state.message != null) {
+          if (state.errors != null && state.errors.groups != null) {
+            toast({
+              title: "Error",
+              description: state.message,
+              variant: "destructive",
+              duration: 3000,
+            });
+          } else {
+            toast({
+              title: "Success",
+              description: state.message,
+              variant: "success",
+              duration: 3000,
+            });
+            setIsEditDialogOpen(false);
+          }
+        }
+      }, [state]);
+
       return (
         <div className="flex items-center justify-center gap-2">
-          <AlertDialog
-            open={isEditDialogOpen}
-            onOpenChange={setIsEditDialogOpen}
-          >
-            <AlertDialogTrigger asChild>
+          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+            <DialogTrigger asChild>
               <Button size="icon">
                 <Icon icon="tabler:edit" />
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Edit Hak Akses</AlertDialogTitle>
-              </AlertDialogHeader>
+            </DialogTrigger>
+            <DialogContent className="">
+              <DialogHeader>
+                <DialogTitle>Edit Barang</DialogTitle>
+              </DialogHeader>
               <div className="grid gap-4 py-4">
                 <form action={formAction}>
+                  <input type="hidden" name="id" value={data.id} />
                   <div className="flex gap-4 mb-4 items-center">
                     <Label htmlFor="itemName" className="w-2/5">
                       Nama Barang
                     </Label>
                     <Input
                       id="itemName"
-                      defaultValue={submissionItem.itemName}
+                      name="itemName"
+                      defaultValue={data.itemName}
+                      aria-describedby="name-error"
+                    />
+                    <div id="name-error" aria-live="polite" aria-atomic="true">
+                      {state.errors?.itemName &&
+                        state.errors.itemName.map((error: string) => (
+                          <p key={error} className="text-red-500 text-sm">
+                            {error}
+                          </p>
+                        ))}
+                    </div>
+                  </div>
+                  <div className="flex gap-4 mb-4 items-center">
+                    <Label htmlFor="price" className="w-2/5">
+                      Harga
+                    </Label>
+                    <Input
+                      id="price"
+                      name="price"
+                      defaultValue={data.price.toString()}
+                    />
+                  </div>
+                  <div className="flex gap-4 mb-4 items-center">
+                    <Label htmlFor="qty" className="w-2/5">
+                      Jumlah Barang
+                    </Label>
+                    <Input
+                      id="qty"
+                      name="qty"
+                      defaultValue={data.qty.toString()}
                     />
                   </div>
                   <div className="flex justify-end">
                     <div className="w-1/2">
                       <div className="flex gap-4">
-                        <AlertDialogCancel className="w-1/2">
+                        <Button
+                          variant={"secondary"}
+                          onClick={() => setIsEditDialogOpen(false)}
+                          type="button"
+                          className="w-1/2"
+                        >
                           Batal
-                        </AlertDialogCancel>
+                        </Button>
                         <div className="w-1/2">
                           <SubmitButton>Simpan</SubmitButton>
                         </div>
@@ -120,8 +189,8 @@ export const columns: ColumnDef<SubmissionItem>[] = [
                   </div>
                 </form>
               </div>
-            </AlertDialogContent>
-          </AlertDialog>
+            </DialogContent>
+          </Dialog>
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <TooltipProvider>
               <Tooltip delayDuration={150}>
@@ -139,8 +208,7 @@ export const columns: ColumnDef<SubmissionItem>[] = [
               <AlertDialogHeader>
                 <AlertDialogTitle>Apakah anda yakin?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Data submission {submissionItem.itemName} akan dihapus
-                  permanen.
+                  Data submission {data.itemName} akan dihapus permanen.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

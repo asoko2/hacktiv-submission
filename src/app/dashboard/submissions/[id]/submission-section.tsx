@@ -1,4 +1,4 @@
-import { getSubmissionItems } from "@/api/submissions-api";
+import { getSubmissionItems } from "@/api/submission-items-api";
 import { columns } from "@/app/dashboard/submissions/[id]/columns";
 import SubmissionItemsTable from "@/app/dashboard/submissions/[id]/submission-items-table";
 import {
@@ -36,10 +36,9 @@ export default async function SubmissionItemSection({ id }: { id: string }) {
       </div>
       <Card className="bg-transparent border-0 shadow-none">
         <CardContent className="p-4">
-          <h1 className="text-xl font-semibold">
+          <h1 className="text-xl font-semibold mb-2">
             Detail Pengajuan - {submissionData.submission.name}
           </h1>
-          <Separator className="my-2" />
           <SubmissionItemsTable data={submissionData.items} columns={columns} />
         </CardContent>
       </Card>

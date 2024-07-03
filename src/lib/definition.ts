@@ -12,7 +12,7 @@ export type UserWithGroups = User & {
   groups: string[];
 };
 
-export const UserWithGroupsCollection = 'users-with-groups';
+export const UserWithGroupsCollection = "users-with-groups";
 
 export type Submission = {
   id: string;
@@ -26,8 +26,8 @@ export type Submission = {
 
 export type SubmissionItem = {
   id?: any;
-  itemName: any;
-  price: any;
-  qty: any;
-  total: any;
+  [itemName: string]: any;
+  price?: any;
+  qty?: any;
+  total?: any;
 };

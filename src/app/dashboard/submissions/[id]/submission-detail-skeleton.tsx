@@ -42,10 +42,9 @@ export default function SubmissionDetailSkeleton() {
       </div>
       <Card className="bg-transparent border-0 shadow-none">
         <CardContent className="p-4">
-          <h1 className="text-xl font-semibold flex items-center gap-2">
+          <h1 className="text-xl font-semibold flex items-center gap-2 mb-2">
             Detail Pengajuan - <Skeleton className="w-36 h-4 rounded" />
           </h1>
-          <Separator className="my-2" />
           <Table className="bg-white rounded-md">
             <TableHeader>
               <TableRow>

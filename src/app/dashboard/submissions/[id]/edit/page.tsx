@@ -42,7 +42,7 @@ export default function SubmissionDetailPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Pengajuan Laptop</BreadcrumbPage>
+              <BreadcrumbPage>Edit</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -66,8 +66,7 @@ export default function SubmissionDetailPage() {
                 <TableHead className="text-center">Aksi</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-            </TableBody>
+            <TableBody></TableBody>
           </Table>
         </CardContent>
       </Card>
